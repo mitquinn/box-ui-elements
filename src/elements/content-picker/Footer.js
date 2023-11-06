@@ -91,28 +91,45 @@ const Footer = ({
                         selectedItems,
                     })
                 ) : (
-                    <ButtonGroup className="bcp-footer-actions">
-                        <Tooltip text={cancelButtonLabel || cancelMessage}>
-                            <Button aria-label={cancelMessage} onClick={onCancel} type="button">
-                                <IconClose height={16} width={16} />
-                            </Button>
-                        </Tooltip>
-                        <Tooltip isDisabled={isChooseButtonDisabled} text={chooseButtonLabel || chooseMessage}>
-                            <PrimaryButton
-                                aria-label={chooseMessage}
-                                disabled={isChooseButtonDisabled} // sets disabled attribute
-                                isDisabled={isChooseButtonDisabled} // used in Button component
-                                onClick={onChoose}
-                                type="button"
-                            >
-                                <IconCheck color="#fff" height={16} width={16} />
-                            </PrimaryButton>
-                        </Tooltip>
-                    </ButtonGroup>
+                    <Button onClick={onCancel} type="button">Cancel</Button>
+                )}
+
+                {renderCustomActionButtons ? (
+                    renderCustomActionButtons({
+                        currentFolderId: currentCollection.id,
+                        currentFolderName: currentCollection.name,
+                        onCancel,
+                        onChoose,
+                        selectedCount,
+                        selectedItems,
+                    })
+                ) : (
+                    <PrimaryButton onClick={onChoose} type="button">Select</PrimaryButton>
                 )}
             </div>
         </footer>
     );
 };
+
+// <ButtonGroup className="bcp-footer-actions">
+//     <Tooltip text={cancelButtonLabel || cancelMessage}>
+//         <Button aria-label={cancelMessage} onClick={onCancel} type="button">
+//             Cancel {/*<IconClose height={16} width={16} />*/}
+//         </Button>
+//     </Tooltip>
+//     <Tooltip isDisabled={isChooseButtonDisabled} text={chooseButtonLabel || chooseMessage}>
+//         <PrimaryButton
+//             aria-label={chooseMessage}
+//             disabled={isChooseButtonDisabled} // sets disabled attribute
+//             isDisabled={isChooseButtonDisabled} // used in Button component
+//             onClick={onChoose}
+//             type="button"
+//         >
+//             Select {/*<IconCheck color="#fff" height={16} width={16} />*/}
+//         </PrimaryButton>
+//     </Tooltip>
+// </ButtonGroup>
+
+
 
 export default injectIntl(Footer);

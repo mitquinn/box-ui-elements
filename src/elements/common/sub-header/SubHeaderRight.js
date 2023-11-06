@@ -64,9 +64,6 @@ const SubHeaderRight = ({
                     onChange={onGridViewSliderChange}
                 />
             )}
-            {hasItems && hasGridView && (
-                <ViewModeChangeButton viewMode={viewMode} onViewModeChange={onViewModeChange} />
-            )}
             {showSort && !!sortBy && !!sortDirection && (
                 <Sort onSortChange={onSortChange} sortBy={sortBy} sortDirection={sortDirection} />
             )}

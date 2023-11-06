@@ -81,7 +81,7 @@ const ItemList = ({
             return '';
         }
 
-        const { selected, type } = items[index];
+        const { selected = false, type } = items[index];
         const isSelectable = isRowSelectable(selectableType, extensionsWhitelist, hasHitSelectionLimit, items[index]);
         return classNames(`bcp-item-row bcp-item-row-${index}`, {
             'bcp-item-row-selected': selected && view !== VIEW_SELECTED,

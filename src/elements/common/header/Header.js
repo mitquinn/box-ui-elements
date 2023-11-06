@@ -33,7 +33,6 @@ const Header = ({ isHeaderLogoVisible = true, view, isSmall, searchQuery, onSear
 
     return (
         <div className="be-header">
-            {isHeaderLogoVisible && <Logo isSmall={isSmall} url={logoUrl} />}
             <div className="be-search">
                 <input
                     aria-label={searchMessage}

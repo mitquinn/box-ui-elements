@@ -35,6 +35,7 @@ type Props = {
     canPreview: boolean,
     canRename: boolean,
     canShare: boolean,
+    canTransferOwnership: boolean,
     currentCollection: Collection,
     fieldsToShow?: FieldsToShow,
     focusedRow: number,
@@ -61,6 +62,7 @@ type Props = {
 
 const Content = ({
     currentCollection,
+    canTransferOwnership,
     fieldsToShow = [],
     focusedRow,
     gridColumnCount = 1,
@@ -88,6 +90,7 @@ const Content = ({
             )}
             {!isViewEmpty && isListView && (
                 <ItemList
+                    canTransferOwnership={canTransferOwnership}
                     currentCollection={currentCollection}
                     onSortChange={onSortChange}
                     focusedRow={focusedRow}

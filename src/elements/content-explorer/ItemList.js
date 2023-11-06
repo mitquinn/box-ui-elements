@@ -6,7 +6,7 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import { injectIntl } from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
 import type { InjectIntlProvidedProps } from 'react-intl';
 import { Table, Column } from '@box/react-virtualized/dist/es/Table';
 import AutoSizer from '@box/react-virtualized/dist/es/AutoSizer';
@@ -19,10 +19,16 @@ import headerCellRenderer from './headerCellRenderer';
 import sizeCellRenderer from './sizeCellRenderer';
 import dateCellRenderer from './dateCellRenderer';
 import moreOptionsCellRenderer from './moreOptionsCellRenderer';
-import { FIELD_DATE, FIELD_ID, FIELD_NAME, FIELD_SIZE, VIEW_FOLDER, VIEW_RECENTS } from '../../constants';
+import { FIELD_DATE, FIELD_ID, FIELD_NAME, FIELD_SIZE, VIEW_FOLDER, VIEW_RECENTS, FIELD_OWNED_BY } from '../../constants';
 import type { View, Collection } from '../../common/types/core';
 import '@box/react-virtualized/styles.css';
 import './ItemList.scss';
+import Button from "components/button/Button";
+import transferOwnershipCellRenderer from "elements/content-explorer/transferOwnershipCellRenderer";
+import ownedByCellRenderer from 'elements/content-explorer/ownedByCellRenderer';
+import actionHeaderCellRenderer from 'elements/content-explorer/actionHeaderCellRenderer';
+import ownerHeaderCellRenderer from 'elements/content-explorer/ownerHeaderCellRenderer';
+
 
 type Props = {
     canDelete: boolean,
@@ -30,11 +36,13 @@ type Props = {
     canPreview: boolean,
     canRename: boolean,
     canShare: boolean,
+    canTransferOwnership: boolean,
     currentCollection: Collection,
     focusedRow: number,
     isMedium: boolean,
     isSmall: boolean,
     isTouch: boolean,
+    onItemTransfer: Function,
     onItemClick: Function,
     onItemDelete: Function,
     onItemDownload: Function,
@@ -61,6 +69,8 @@ const ItemList = ({
     canDelete,
     canPreview,
     canRename,
+    canTransferOwnership,
+    onItemTransfer,
     onItemClick,
     onItemSelect,
     onItemDelete,
@@ -80,7 +90,8 @@ const ItemList = ({
         onItemClick,
         onItemSelect,
         canPreview,
-        isSmall, // shows details if false
+        (!!(isSmall || isMedium)),
+        // isSmall, // shows details if false
         isTouch,
     );
     const iconCell = iconCellRenderer();
@@ -100,6 +111,16 @@ const ItemList = ({
         onItemPreview,
         isSmall,
     );
+    const transferOwnershipCell = transferOwnershipCellRenderer(
+        canTransferOwnership,
+        onItemTransfer
+    );
+
+    const ownedByCell = ownedByCellRenderer();
+
+
+
+
     const isRecents: boolean = view === VIEW_RECENTS;
     const hasSort: boolean = view === VIEW_FOLDER;
     const { id, items = [], sortBy, sortDirection }: Collection = currentCollection;
@@ -179,15 +200,11 @@ const ItemList = ({
                                 width={300}
                                 flexGrow={1}
                             />
-                            {isSmall ? null : (
+                            {isSmall || isMedium ? null : (
                                 <Column
                                     className="bce-item-column"
                                     disableSort={!hasSort}
-                                    label={
-                                        isRecents
-                                            ? intl.formatMessage(messages.interacted)
-                                            : intl.formatMessage(messages.modified)
-                                    }
+                                    label="Updated"
                                     dataKey={FIELD_DATE}
                                     cellRenderer={dateCell}
                                     headerRenderer={headerCellRenderer}
@@ -195,26 +212,44 @@ const ItemList = ({
                                     flexGrow={1}
                                 />
                             )}
-                            {isSmall || isMedium ? null : (
-                                <Column
-                                    className="bce-item-column"
-                                    disableSort={!hasSort}
-                                    label={intl.formatMessage(messages.size)}
-                                    dataKey={FIELD_SIZE}
-                                    cellRenderer={sizeAccessCell}
-                                    headerRenderer={headerCellRenderer}
-                                    width={80}
-                                    flexShrink={0}
-                                />
-                            )}
                             <Column
                                 disableSort
-                                dataKey={FIELD_ID}
-                                cellRenderer={moreOptionsCell}
-                                headerRole="gridcell"
-                                width={isSmall || !canShare ? 58 : 140}
-                                flexShrink={0}
+                                dataKey={FIELD_OWNED_BY}
+                                cellRenderer={ownedByCell}
+                                headerRenderer={ownerHeaderCellRenderer}
+                                width={150}
+                                flexGrow={1}
                             />
+                            {/*{isSmall || isMedium ? null : (*/}
+                            {/*    <Column*/}
+                            {/*        className="bce-item-column"*/}
+                            {/*        disableSort={!hasSort}*/}
+                            {/*        label={intl.formatMessage(messages.size)}*/}
+                            {/*        dataKey={FIELD_SIZE}*/}
+                            {/*        cellRenderer={sizeAccessCell}*/}
+                            {/*        headerRenderer={headerCellRenderer}*/}
+                            {/*        width={80}*/}
+                            {/*        flexShrink={0}*/}
+                            {/*    />*/}
+                            {/*)}*/}
+                            {!canTransferOwnership ? null : (
+                                <Column
+                                    disableSort
+                                    dataKey={FIELD_ID}
+                                    headerRenderer={actionHeaderCellRenderer}
+                                    cellRenderer={transferOwnershipCell}
+                                    width={155}
+                                    flexGrow={1}
+                                />
+                            )}
+                            {/*<Column*/}
+                            {/*    disableSort*/}
+                            {/*    dataKey={FIELD_ID}*/}
+                            {/*    cellRenderer={moreOptionsCell}*/}
+                            {/*    headerRole="gridcell"*/}
+                            {/*    width={isSmall || !canShare ? 58 : 140}*/}
+                            {/*    flexShrink={0}*/}
+                            {/*/>*/}
                         </Table>
                     )}
                 </AutoSizer>

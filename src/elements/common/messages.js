@@ -107,6 +107,11 @@ const messages = defineMessages({
         description: 'Label for share action.',
         defaultMessage: 'Share',
     },
+    canTransferOwnership: {
+        id: 'be.canTransferOwnership',
+        description: 'Label for can transfer ownership action.',
+        defaultMessage: 'Transfer Ownership',
+    },
     download: {
         id: 'be.download',
         description: 'Label for download action.',

@@ -100,6 +100,7 @@ type Props = {
     messages?: StringMap,
     onCancel: Function,
     onChoose: Function,
+    onFinishNavigationEvent: Function,
     renderCustomActionButtons?: ({
         onCancel: Function,
         onChoose: Function,
@@ -162,6 +163,7 @@ class ContentPicker extends Component<Props, State> {
         rootFolderId: DEFAULT_ROOT,
         onChoose: noop,
         onCancel: noop,
+        onFinishNavigationEvent: noop,
         initialPage: DEFAULT_PAGE_NUMBER,
         initialPageSize: DEFAULT_PAGE_SIZE,
         sortBy: FIELD_NAME,
@@ -241,6 +243,38 @@ class ContentPicker extends Component<Props, State> {
             isLoading: false,
             errorCode: '',
         };
+    }
+
+    /**
+     * @param boxItems BoxItem[]
+     */
+    addBoxItemToSelected(boxItems: BoxItem[]) {
+        let { currentCollection }: State = this.state;
+        const { items = [] } = currentCollection;
+
+        for (const boxItem of boxItems) {
+            // First we want to cache the BoxItem
+            const key: string = this.api.getAPI(boxItem.type).getCacheKey(boxItem.id);
+            this.api.getCache().set(key, boxItem);
+
+            const boxItemExistInItems = items.some((item) => boxItem.id === item.id);
+            if (!boxItemExistInItems) {
+                items.unshift(boxItem);
+            }
+        }
+
+        currentCollection = {
+            ...currentCollection,
+            items,
+        };
+
+        // this.setState({ selected, currentCollection }, () => {
+        this.setState({ currentCollection }, () => {
+            for (const boxItem of boxItems) {
+                this.select(boxItem, { forceSharedLink: false});
+            }
+            this.showSelected();
+        });
     }
 
     /**
@@ -458,6 +492,8 @@ class ContentPicker extends Component<Props, State> {
         // If loading for the very first time, only allow focus if autoFocus is true
         if (this.firstLoad && !autoFocus) {
             this.firstLoad = false;
+            const { onFinishNavigationEvent }: Props = this.props;
+            onFinishNavigationEvent();
             return;
         }
 
@@ -899,7 +935,6 @@ class ContentPicker extends Component<Props, State> {
             }
         });
     };
-
     /**
      * Fetch the shared link info
      * @param {BoxItem} item - The item (folder, file, weblink)

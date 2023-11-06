@@ -101,6 +101,7 @@ type Props = {
     canRename: boolean,
     canSetShareAccess: boolean,
     canShare: boolean,
+    canTransferOwnership: boolean,
     canUpload: boolean,
     className: string,
     contentPreviewProps: ContentPreviewProps,
@@ -129,6 +130,7 @@ type Props = {
     onRename: Function,
     onSelect: Function,
     onUpload: Function,
+    onTransfer: Function,
     previewLibraryVersion: string,
     requestInterceptor?: Function,
     responseInterceptor?: Function,
@@ -202,6 +204,7 @@ class ContentExplorer extends Component<Props, State> {
         canRename: true,
         canShare: true,
         canPreview: true,
+        canTransferOwnership: false,
         canSetShareAccess: true,
         canCreateNewFolder: true,
         autoFocus: false,
@@ -218,6 +221,7 @@ class ContentExplorer extends Component<Props, State> {
         onSelect: noop,
         onUpload: noop,
         onNavigate: noop,
+        onTransfer: noop,
         defaultView: DEFAULT_VIEW_FILES,
         initialPage: DEFAULT_PAGE_NUMBER,
         initialPageSize: DEFAULT_PAGE_SIZE,
@@ -1240,6 +1244,15 @@ class ContentExplorer extends Component<Props, State> {
         this.select(item, this.shareCallback);
     };
 
+    transfer = (item: BoxItem): void => {
+        this.select(item, this.transferCallback);
+    };
+
+    transferCallback = (item: BoxItem): void => {
+        const { onTransfer }: Props = this.props;
+        onTransfer(cloneDeep([item]));
+    };
+
     /**
      * Fetch the shared link info
      * @param {BoxItem} item - The item (folder, file, weblink)
@@ -1585,6 +1598,7 @@ class ContentExplorer extends Component<Props, State> {
             canRename,
             canSetShareAccess,
             canShare,
+            canTransferOwnership,
             canUpload,
             className,
             contentPreviewProps,
@@ -1691,6 +1705,7 @@ class ContentExplorer extends Component<Props, State> {
                             canPreview={canPreview}
                             canRename={canRename}
                             canShare={canShare}
+                            canTransferOwnership={canTransferOwnership}
                             currentCollection={currentCollection}
                             focusedRow={focusedRow}
                             gridColumnCount={Math.min(gridColumnCount, maxGridColumnCount)}
@@ -1705,6 +1720,7 @@ class ContentExplorer extends Component<Props, State> {
                             onItemRename={this.rename}
                             onItemSelect={this.select}
                             onItemShare={this.share}
+                            onItemTransfer={this.transfer}
                             onMetadataUpdate={this.updateMetadata}
                             onSortChange={this.sort}
                             rootElement={this.rootElement}

@@ -33,6 +33,11 @@ class ContentPicker extends ES6Wrapper {
         this.emit('cancel');
     };
 
+
+    onFinishNavigationEvent = (): void => {
+        this.emit('finishedNavigation');
+    };
+
     /**
      * Returns the type of content picker
      *
@@ -52,6 +57,17 @@ class ContentPicker extends ES6Wrapper {
         return CLIENT_NAME_CONTENT_PICKER;
     }
 
+    addBoxItemToSelected(items: BoxItem[]) {
+        const component = this.getComponent();
+        component.addBoxItemToSelected(items);
+    }
+
+    viewSelectedPage() {
+        const component = this.getComponent();
+        component.showSelected();
+    }
+
+
     /** @inheritdoc */
     render() {
         const { modal, ...rest }: { modal?: ModalOptions } = this.options;
@@ -65,6 +81,7 @@ class ContentPicker extends ES6Wrapper {
                 modal={((modal: any): ModalOptions)}
                 onCancel={this.onCancel}
                 onChoose={this.onChoose}
+                onFinishNavigationEvent={this.onFinishNavigationEvent}
                 rootFolderId={this.id}
                 token={this.token}
                 type={this.getType()}
