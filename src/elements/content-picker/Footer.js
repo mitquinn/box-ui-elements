@@ -91,7 +91,9 @@ const Footer = ({
                         selectedItems,
                     })
                 ) : (
-                    <Button onClick={onCancel} type="button">Cancel</Button>
+                    <Button onClick={onCancel} type="button">
+                        Cancel
+                    </Button>
                 )}
 
                 {renderCustomActionButtons ? (
@@ -104,7 +106,9 @@ const Footer = ({
                         selectedItems,
                     })
                 ) : (
-                    <PrimaryButton onClick={onChoose} type="button">Select</PrimaryButton>
+                    <PrimaryButton onClick={onChoose} type="button">
+                        Select
+                    </PrimaryButton>
                 )}
             </div>
         </footer>
@@ -129,7 +133,5 @@ const Footer = ({
 //         </PrimaryButton>
 //     </Tooltip>
 // </ButtonGroup>
-
-
 
 export default injectIntl(Footer);

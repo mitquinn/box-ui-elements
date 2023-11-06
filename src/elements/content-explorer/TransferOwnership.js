@@ -5,7 +5,6 @@ import type { IntlShape } from 'react-intl';
 
 import Button from '../../components/button/Button';
 
-
 import messages from '../common/messages';
 
 import type { CommonGridViewFunctions } from './flowTypes';
@@ -20,13 +19,7 @@ type Props = {
     ...$Exact<CommonGridViewFunctions>,
 };
 
-const TransferOwnership = ({
-    canTransferOwnership,
-    onItemTransfer,
-    intl,
-    item,
-}: Props) => {
-
+const TransferOwnership = ({ canTransferOwnership, onItemTransfer, intl, item }: Props) => {
     const onTransfer = () => onItemTransfer(item);
 
     if (!canTransferOwnership) {
@@ -40,7 +33,6 @@ const TransferOwnership = ({
     if (item.type !== 'folder') {
         return <span />;
     }
-
 
     return (
         <div className="bce-transfer-ownership">

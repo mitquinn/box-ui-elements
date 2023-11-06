@@ -23,7 +23,6 @@ const FILE_ID_IMAGE = '308345646235';
 const token = 'aiMADZorjZDCJEfi7zREbvHBo2K70MXf';
 const language = 'en-US';
 
-
 ReactDOM.render(
     <ContentPreview
         hasHeader
@@ -33,4 +32,5 @@ ReactDOM.render(
         messages={messages}
         collection={[FILE_ID_DOC, FILE_ID_EXCEL, FILE_ID_VIDEO, FILE_ID_3D, FILE_ID_TEXT, FILE_ID_AUDIO, FILE_ID_IMAGE]}
     />,
-    document.getElementById('example'));
+    document.getElementById('example'),
+);

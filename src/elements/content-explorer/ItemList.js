@@ -6,10 +6,14 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import {FormattedMessage, injectIntl} from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import type { InjectIntlProvidedProps } from 'react-intl';
 import { Table, Column } from '@box/react-virtualized/dist/es/Table';
 import AutoSizer from '@box/react-virtualized/dist/es/AutoSizer';
+import Button from 'components/button/Button';
+import transferOwnershipCellRenderer from 'elements/content-explorer/transferOwnershipCellRenderer';
+import ownedByCellRenderer from 'elements/content-explorer/ownedByCellRenderer';
+import actionHeaderCellRenderer from 'elements/content-explorer/actionHeaderCellRenderer';
 import KeyBinder from '../common/KeyBinder';
 import nameCellRenderer from '../common/item/nameCellRenderer';
 import iconCellRenderer from '../common/item/iconCellRenderer';
@@ -19,16 +23,19 @@ import headerCellRenderer from './headerCellRenderer';
 import sizeCellRenderer from './sizeCellRenderer';
 import dateCellRenderer from './dateCellRenderer';
 import moreOptionsCellRenderer from './moreOptionsCellRenderer';
-import { FIELD_DATE, FIELD_ID, FIELD_NAME, FIELD_SIZE, VIEW_FOLDER, VIEW_RECENTS, FIELD_OWNED_BY } from '../../constants';
+import {
+    FIELD_DATE,
+    FIELD_ID,
+    FIELD_NAME,
+    FIELD_SIZE,
+    VIEW_FOLDER,
+    VIEW_RECENTS,
+    FIELD_OWNED_BY,
+} from '../../constants';
 import type { View, Collection } from '../../common/types/core';
 import '@box/react-virtualized/styles.css';
 import './ItemList.scss';
-import Button from "components/button/Button";
-import transferOwnershipCellRenderer from "elements/content-explorer/transferOwnershipCellRenderer";
-import ownedByCellRenderer from 'elements/content-explorer/ownedByCellRenderer';
-import actionHeaderCellRenderer from 'elements/content-explorer/actionHeaderCellRenderer';
 import ownerHeaderCellRenderer from 'elements/content-explorer/ownerHeaderCellRenderer';
-
 
 type Props = {
     canDelete: boolean,
@@ -42,7 +49,6 @@ type Props = {
     isMedium: boolean,
     isSmall: boolean,
     isTouch: boolean,
-    onItemTransfer: Function,
     onItemClick: Function,
     onItemDelete: Function,
     onItemDownload: Function,
@@ -50,6 +56,7 @@ type Props = {
     onItemRename: Function,
     onItemSelect: Function,
     onItemShare: Function,
+    onItemTransfer: Function,
     onSortChange: Function,
     rootElement: HTMLElement,
     rootId: string,
@@ -90,7 +97,7 @@ const ItemList = ({
         onItemClick,
         onItemSelect,
         canPreview,
-        (!!(isSmall || isMedium)),
+        !!(isSmall || isMedium),
         // isSmall, // shows details if false
         isTouch,
     );
@@ -111,15 +118,9 @@ const ItemList = ({
         onItemPreview,
         isSmall,
     );
-    const transferOwnershipCell = transferOwnershipCellRenderer(
-        canTransferOwnership,
-        onItemTransfer
-    );
+    const transferOwnershipCell = transferOwnershipCellRenderer(canTransferOwnership, onItemTransfer);
 
     const ownedByCell = ownedByCellRenderer();
-
-
-
 
     const isRecents: boolean = view === VIEW_RECENTS;
     const hasSort: boolean = view === VIEW_FOLDER;
@@ -220,18 +221,18 @@ const ItemList = ({
                                 width={150}
                                 flexGrow={1}
                             />
-                            {/*{isSmall || isMedium ? null : (*/}
-                            {/*    <Column*/}
-                            {/*        className="bce-item-column"*/}
-                            {/*        disableSort={!hasSort}*/}
-                            {/*        label={intl.formatMessage(messages.size)}*/}
-                            {/*        dataKey={FIELD_SIZE}*/}
-                            {/*        cellRenderer={sizeAccessCell}*/}
-                            {/*        headerRenderer={headerCellRenderer}*/}
-                            {/*        width={80}*/}
-                            {/*        flexShrink={0}*/}
-                            {/*    />*/}
-                            {/*)}*/}
+                            {/* {isSmall || isMedium ? null : ( */}
+                            {/*    <Column */}
+                            {/*        className="bce-item-column" */}
+                            {/*        disableSort={!hasSort} */}
+                            {/*        label={intl.formatMessage(messages.size)} */}
+                            {/*        dataKey={FIELD_SIZE} */}
+                            {/*        cellRenderer={sizeAccessCell} */}
+                            {/*        headerRenderer={headerCellRenderer} */}
+                            {/*        width={80} */}
+                            {/*        flexShrink={0} */}
+                            {/*    /> */}
+                            {/* )} */}
                             {!canTransferOwnership ? null : (
                                 <Column
                                     disableSort
@@ -242,14 +243,14 @@ const ItemList = ({
                                     flexGrow={1}
                                 />
                             )}
-                            {/*<Column*/}
-                            {/*    disableSort*/}
-                            {/*    dataKey={FIELD_ID}*/}
-                            {/*    cellRenderer={moreOptionsCell}*/}
-                            {/*    headerRole="gridcell"*/}
-                            {/*    width={isSmall || !canShare ? 58 : 140}*/}
-                            {/*    flexShrink={0}*/}
-                            {/*/>*/}
+                            {/* <Column */}
+                            {/*    disableSort */}
+                            {/*    dataKey={FIELD_ID} */}
+                            {/*    cellRenderer={moreOptionsCell} */}
+                            {/*    headerRole="gridcell" */}
+                            {/*    width={isSmall || !canShare ? 58 : 140} */}
+                            {/*    flexShrink={0} */}
+                            {/* /> */}
                         </Table>
                     )}
                 </AutoSizer>

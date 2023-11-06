@@ -33,7 +33,6 @@ class ContentPicker extends ES6Wrapper {
         this.emit('cancel');
     };
 
-
     onFinishNavigationEvent = (): void => {
         this.emit('finishedNavigation');
     };
@@ -66,7 +65,6 @@ class ContentPicker extends ES6Wrapper {
         const component = this.getComponent();
         component.showSelected();
     }
-
 
     /** @inheritdoc */
     render() {

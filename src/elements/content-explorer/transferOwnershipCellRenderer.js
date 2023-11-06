@@ -5,17 +5,10 @@
  */
 
 import React from 'react';
+import TransferOwnership from 'elements/content-explorer/TransferOwnership';
 import MoreOptions from './MoreOptions';
 import type { BoxItem } from '../../common/types/core';
-import TransferOwnership from "elements/content-explorer/TransferOwnership";
 
-export default (
-    canTransferOwnership: boolean,
-    onItemTransfer: Function,
-) => ({ rowData }: { rowData: BoxItem }) => (
-    <TransferOwnership
-        canTransferOwnership={canTransferOwnership}
-        onItemTransfer={onItemTransfer}
-        item={rowData}
-    />
+export default (canTransferOwnership: boolean, onItemTransfer: Function) => ({ rowData }: { rowData: BoxItem }) => (
+    <TransferOwnership canTransferOwnership={canTransferOwnership} onItemTransfer={onItemTransfer} item={rowData} />
 );

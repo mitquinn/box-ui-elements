@@ -257,7 +257,7 @@ class ContentPicker extends Component<Props, State> {
             const key: string = this.api.getAPI(boxItem.type).getCacheKey(boxItem.id);
             this.api.getCache().set(key, boxItem);
 
-            const boxItemExistInItems = items.some((item) => boxItem.id === item.id);
+            const boxItemExistInItems = items.some(item => boxItem.id === item.id);
             if (!boxItemExistInItems) {
                 items.unshift(boxItem);
             }
@@ -271,7 +271,7 @@ class ContentPicker extends Component<Props, State> {
         // this.setState({ selected, currentCollection }, () => {
         this.setState({ currentCollection }, () => {
             for (const boxItem of boxItems) {
-                this.select(boxItem, { forceSharedLink: false});
+                this.select(boxItem, { forceSharedLink: false });
             }
             this.showSelected();
         });
@@ -935,6 +935,7 @@ class ContentPicker extends Component<Props, State> {
             }
         });
     };
+
     /**
      * Fetch the shared link info
      * @param {BoxItem} item - The item (folder, file, weblink)
